@@ -146,11 +146,10 @@ module Shadowbox
 
       files << 'intro'
       files << 'core'
+      files << 'init'
       files << 'util'
       files << File.join('adapters', adapter)
-      files << 'load'
       files << 'plugins'
-      files << 'cache'
       files << 'find' if css_support
       files << 'flash' if requires_flash?
       files << File.join('languages', language)
