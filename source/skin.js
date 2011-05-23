@@ -556,6 +556,9 @@ K.options = {
  * @public
  */
 K.init = function() {
+
+	initialized = true;
+
     S.appendHTML(document.body, sprintf(K.markup, S.lang));
 
     K.body = get("sb-body-inner");

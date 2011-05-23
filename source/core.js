@@ -14,26 +14,11 @@ var S = {
      */
     version: "3.0.3"
 
-}
+};
 
-var ua = navigator.userAgent.toLowerCase();
+var root = document.documentElement;
 
-// operating system detection
-if (ua.indexOf('windows') > -1 || ua.indexOf('win32') > -1) {
-    S.isWindows = true;
-} else if (ua.indexOf('macintosh') > -1 || ua.indexOf('mac os x') > -1) {
-    S.isMac = true;
-} else if (ua.indexOf('linux') > -1) {
-    S.isLinux = true;
-}
-
-// browser detection -- deprecated. the goal is to use object detection
-// instead of the user agent string
-S.isIE = ua.indexOf('msie') > -1;
-S.isIE6 = ua.indexOf('msie 6') > -1;
-S.isIE7 = ua.indexOf('msie 7') > -1;
-S.isGecko = ua.indexOf('gecko') > -1 && ua.indexOf('safari') == -1;
-S.isWebKit = ua.indexOf('applewebkit/') > -1;
+var OBJECT = document.createElement('object');
 
 var inlineId = /#(.+)$/,
     galleryName = /^(light|shadow)box\[(.*?)\]/i,
@@ -407,33 +392,8 @@ S.revertOptions = function() {
  * @public
  */
 S.init = function(options, callback) {
-    if (initialized)
-        return;
-
-    initialized = true;
-
     if (S.skin.options)
         apply(S.options, S.skin.options);
-
-    if (options)
-        apply(S.options, options);
-
-    if (!S.path) {
-        // determine script path automatically
-        var path, scripts = document.getElementsByTagName("script");
-        for (var i = 0, len = scripts.length; i < len; ++i) {
-            path = scriptPath.exec(scripts[i].src);
-            if (path) {
-                S.path = path[1];
-                break;
-            }
-        }
-    }
-
-    if (callback)
-        S.onReady = callback;
-
-    bindLoad();
 }
 
 /**
@@ -445,7 +405,7 @@ S.init = function(options, callback) {
  * - An array of any of the above
  *
  * Note: When a single link object is given, Shadowbox will automatically search
- * for other cached link objects that have been set up in the same gallery and
+ * for other link objects that have been set up in the same gallery and
  * display them all together.
  *
  * @param   {mixed}     obj
@@ -672,7 +632,7 @@ S.setDimensions = function(height, width, maxHeight, maxWidth, topBottom, leftRi
  * @public
  */
 S.makeGallery = function(obj) {
-    var gallery = [], current = -1;
+    var i, o, list, gallery = [], current = -1;
 
     if (typeof obj == "string")
         obj = [obj];
@@ -687,19 +647,15 @@ S.makeGallery = function(obj) {
         });
         current = 0;
     } else {
-        if (obj.tagName) {
-            // check the cache for this object before building one on the fly
-            var cacheObj = S.getCache(obj);
-            obj = cacheObj ? cacheObj : S.makeObject(obj);
+        if (obj.nodeName > '@') {
+            list = obj.parentNode.getElementsByTagName(obj.nodeName);
+            obj = S.makeObject(obj);
         }
 
         if (obj.gallery) {
-            // gallery object, build gallery from cached gallery objects
-            gallery = [];
 
-            var o;
-            for (var key in S.cache) {
-                o = S.cache[key];
+            for (i = 0, l = list.length; l > i; ++i) {
+                o = S.makeObject(list[i]);
                 if (o.gallery && o.gallery == obj.gallery) {
                     if (current == -1 && o.content == obj.content)
                         current = gallery.length;
@@ -867,8 +823,8 @@ function filterGallery() {
                 needed = "qt";
             break;
         case "wmp":
-            if (S.isMac) {
-                if (plugins.qt && plugins.f4m) {
+            if (plugins.qt) {
+                if (plugins.f4m) {
                     obj.player = "qt";
                 } else {
                     needed = "qtf4m";
