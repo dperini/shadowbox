@@ -150,7 +150,6 @@ module Shadowbox
       files << 'util'
       files << File.join('adapters', adapter)
       files << 'plugins'
-      files << 'find' if css_support
       files << 'flash' if requires_flash?
       files << File.join('languages', language)
       files += players.map {|p| File.join('players', p) }
