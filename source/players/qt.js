@@ -53,9 +53,9 @@ S.qt.prototype = {
                 kioskmode:  "true"
             };
 
-        if (S.isIE) {
+        if ('classid' in OBJECT && 'codeBase' in OBJECT) {
             movie.classid = "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B";
-            movie.codebase = "http://www.apple.com/qtactivex/qtplugin.cab#version=6,0,2,0";
+            movie.codeBase = "http://www.apple.com/qtactivex/qtplugin.cab#version=6,0,2,0";
         } else {
             movie.type = "video/quicktime";
             movie.data = this.obj.content;

@@ -49,7 +49,7 @@ S.wmp.prototype = {
             '" width="' + this.width + '"',
             params = { autostart: opt.autoplayMovies ? 1 : 0 };
 
-        if (S.isIE) {
+        if ('classid' in OBJECT && 'codeBase' in OBJECT) {
             // movie += ' type="application/x-oleobject"';
             movie += ' classid="clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6"';
             params.url = this.obj.content;
@@ -77,7 +77,7 @@ S.wmp.prototype = {
      * @public
      */
     remove: function(){
-        if (S.isIE) {
+        if (window[this.id].controls && window[this.id].constrols.stop) {
             try {
                 window[this.id].controls.stop(); // stop the movie
                 window[this.id].URL = "movie" + now() + ".wmv"; // force player refresh
