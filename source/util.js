@@ -12,7 +12,7 @@ if (!Array.prototype.indexOf) {
         }
 
         return -1;
-    }
+    };
 }
 
 /**
@@ -49,7 +49,9 @@ function apply(original, extension) {
  */
 function each(obj, callback) {
     var i = 0, len = obj.length;
-    for (var value = obj[0]; i < len && callback.call(value, i, value) !== false; value = obj[++i]) {}
+    for (var value = obj[0]; i < len && callback.call(value, i, value) !== false; ++i) {
+      value = obj[i];
+    }
 }
 
 /**
@@ -163,14 +165,14 @@ S.getStyle = (function() {
             if (computedStyle)
                 ret = computedStyle[style];
 
-            if (style == "opacity" && ret == "")
+            if (style == "opacity" && ret === "")
                 ret = "1";
         } else {
             ret = el.currentStyle[style];
         }
 
         return ret;
-    }
+    };
 })();
 
 /**
@@ -191,7 +193,7 @@ S.appendHTML = function(el, html) {
     } else {
         el.innerHTML = html;
     }
-}
+};
 
 /**
  * Gets the window size. The dimension may be either "Height" or "Width".
@@ -205,7 +207,7 @@ S.getWindowSize = function(dimension) {
         return document.documentElement["client" + dimension];
 
     return document.body["client" + dimension];
-}
+};
 
 /**
  * Sets an element's opacity.
@@ -228,7 +230,7 @@ S.setOpacity = function(el, opacity) {
                 " alpha(opacity=" + (opacity * 100) + ")";
         }
     }
-}
+};
 
 /**
  * Clears the opacity setting on the given element. Needed for some cases in IE.
@@ -238,4 +240,4 @@ S.setOpacity = function(el, opacity) {
  */
 S.clearOpacity = function(el) {
     S.setOpacity(el, 1);
-}
+};

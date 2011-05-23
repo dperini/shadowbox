@@ -18,7 +18,7 @@ S.iframe = function(obj, id) {
     var overlay = get("sb-overlay");
     this.height = obj.height ? parseInt(obj.height, 10) : overlay.offsetHeight;
     this.width = obj.width ? parseInt(obj.width, 10) : overlay.offsetWidth;
-}
+};
 
 S.iframe.prototype = {
 
@@ -76,4 +76,4 @@ S.iframe.prototype = {
         win.location.href = this.obj.content;
     }
 
-}
+};

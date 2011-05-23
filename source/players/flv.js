@@ -27,7 +27,7 @@ S.flv = function(obj, id) {
     if (S.options.showMovieControls)
         this.height += jwControllerHeight;
     this.width = obj.width ? parseInt(obj.width, 10) : 300;
-}
+};
 
 S.flv.ext = ["flv", "m4v"];
 
@@ -90,4 +90,4 @@ S.flv.prototype = {
         el.width = dims.innerWidth;
     }
 
-}
+};

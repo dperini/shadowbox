@@ -26,7 +26,7 @@ S.qt = function(obj, id) {
     if (S.options.showMovieControls)
         this.height += qtControllerHeight;
     this.width = obj.width ? parseInt(obj.width, 10) : 300;
-}
+};
 
 S.qt.ext = ["dv", "mov", "moov", "movie", "mp4", "avi", "mpg", "mpeg"];
 
@@ -94,4 +94,4 @@ S.qt.prototype = {
             remove(el);
     }
 
-}
+};

@@ -189,9 +189,9 @@ S.img = function(obj, id) {
         // clean up to prevent memory leak in IE
         pre.onload = null;
         pre = null;
-    }
+    };
     pre.src = obj.content;
-}
+};
 
 S.img.ext = ["bmp", "gif", "jpg", "jpeg", "png"];
 
@@ -275,8 +275,8 @@ S.img.prototype = {
             break;
         case "drag":
             if (dragTarget) {
-                var top = parseInt(S.getStyle(dragTarget, "top")),
-                    left = parseInt(S.getStyle(dragTarget, "left"));
+                var top = parseInt(S.getStyle(dragTarget, "top"), 10),
+                    left = parseInt(S.getStyle(dragTarget, "left"), 10);
 
                 // fix positioning when viewport is enlarged
                 if (top + this.height < dims.innerHeight)
@@ -287,7 +287,9 @@ S.img.prototype = {
                 updateProxy();
             }
             break;
+        default:
+            break;
         }
     }
 
-}
+};

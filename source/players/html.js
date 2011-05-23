@@ -17,7 +17,7 @@ S.html = function(obj, id) {
     // height defaults to 300, width defaults to 500
     this.height = obj.height ? parseInt(obj.height, 10) : 300;
     this.width = obj.width ? parseInt(obj.width, 10) : 500;
-}
+};
 
 S.html.prototype = {
 
@@ -48,4 +48,4 @@ S.html.prototype = {
             remove(el);
     }
 
-}
+};

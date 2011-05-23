@@ -9,7 +9,7 @@ document.onclick = function(e) {
 
     while (target && target.nodeType == 1) {
         if (target.nodeName.toUpperCase() == 'A' &&
-            /^(light|shadow)box(\[(.*)\])?/.test(target.getAttribute('rel'))) {
+            (/^(light|shadow)box(\[(.*)\])?/).test(target.getAttribute('rel'))) {
 
             S.open(target);
 
@@ -24,4 +24,6 @@ document.onclick = function(e) {
         }
         target = target.parentNode;
     }
+
+    return true;
 };

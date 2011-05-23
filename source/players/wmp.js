@@ -26,7 +26,7 @@ S.wmp = function(obj, id) {
     if (S.options.showMovieControls)
         this.height += wmpControllerHeight;
     this.width = obj.width ? parseInt(obj.width, 10) : 300;
-}
+};
 
 S.wmp.ext = ["asf", "avi", "mpg", "mpeg", "wm", "wmv"];
 
@@ -56,7 +56,7 @@ S.wmp.prototype = {
             params.uimode = opt.showMovieControls ? "full" : "none";
         } else {
             movie += ' type="video/x-ms-wmv"';
-            movie += ' data="' + this.obj.content + '"'
+            movie += ' data="' + this.obj.content + '"';
             params.showcontrols = opt.showMovieControls ? 1 : 0;
         }
 
@@ -94,4 +94,4 @@ S.wmp.prototype = {
         }
     }
 
-}
+};

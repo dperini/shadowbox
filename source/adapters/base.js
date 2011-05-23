@@ -79,8 +79,10 @@ function addEvent(el, type, handler) {
         if (el.setInterval && (el !== window && !el.frameElement))
             el = window;
 
-        if (!handler.__guid)
-            handler.__guid = addEvent.guid++;
+        if (!handler.__guid) {
+            handler.__guid = addEvent.guid;
+            addEvent.guid++;
+        }
 
         if (!el.events)
             el.events = {};
@@ -113,21 +115,21 @@ addEvent.handleEvent = function(event) {
     }
 
     return result;
-}
+};
 
 addEvent.preventDefault = function() {
     this.returnValue = false;
-}
+};
 
 addEvent.stopPropagation = function() {
     this.cancelBubble = true;
-}
+};
 
 addEvent.fixEvent = function(e) {
     e.preventDefault = addEvent.preventDefault;
     e.stopPropagation = addEvent.stopPropagation;
     return e;
-}
+};
 
 /**
  * Removes an event handler from the given element.

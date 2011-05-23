@@ -79,7 +79,7 @@ function animate(el, property, to, duration, callback) {
             value + "px";
     };
 
-    if (duration == 0 || (!isOpacity && !S.options.animate) || (isOpacity && !S.options.animateFade)) {
+    if (duration === 0 || (!isOpacity && !S.options.animate) || (isOpacity && !S.options.animateFade)) {
         anim(el, to);
         if (callback)
             callback();
@@ -88,7 +88,7 @@ function animate(el, property, to, duration, callback) {
 
     var from = parseFloat(S.getStyle(el, property)) || 0;
     var delta = to - from;
-    if (delta == 0) {
+    if (delta === 0) {
         if (callback)
             callback();
         return; // nothing to animate
@@ -179,7 +179,8 @@ function toggleNav(id, on) {
  * @private
  */
 function toggleLoading(on, callback) {
-    var loading = get("sb-loading"),
+    var wrapped, 
+        loading = get("sb-loading"),
         playerName = S.getCurrent().player,
         anim = (playerName == "img" || playerName == "html"); // fade on images & html
 
@@ -187,11 +188,11 @@ function toggleLoading(on, callback) {
         S.setOpacity(loading, 0);
         loading.style.display = "block";
 
-        var wrapped = function() {
+        wrapped = function() {
             S.clearOpacity(loading);
             if (callback)
                 callback();
-        }
+        };
 
         if (anim) {
             animate(loading, "opacity", 1, S.options.fadeDuration, wrapped);
@@ -199,12 +200,12 @@ function toggleLoading(on, callback) {
             wrapped();
         }
     } else {
-        var wrapped = function() {
+        wrapped = function() {
             loading.style.display = "none";
             S.clearOpacity(loading);
             if (callback)
                 callback();
-        }
+        };
 
         if (anim) {
             animate(loading, "opacity", 0, S.options.fadeDuration, wrapped);
@@ -221,7 +222,7 @@ function toggleLoading(on, callback) {
  * @private
  */
 function buildBars(callback) {
-    var obj = S.getCurrent();
+    var obj = S.getCurrent(), len;
 
     get("sb-title-inner").innerHTML = obj.title || "";
 
@@ -229,7 +230,7 @@ function buildBars(callback) {
     var close, next, play, pause, previous;
     if (S.options.displayNav) {
         close = true;
-        var len = S.gallery.length;
+        len = S.gallery.length;
         if (len > 1) {
             if (S.options.continuous) {
                 next = previous = true;
@@ -255,12 +256,12 @@ function buildBars(callback) {
     // build the counter
     var counter = "";
     if (S.options.displayCounter && S.gallery.length > 1) {
-        var len = S.gallery.length;
+        len = S.gallery.length;
         if (S.options.counterType == "skip") {
             // limit the counter?
             var i = 0,
                 end = len,
-                limit = parseInt(S.options.counterLimit) || 0;
+                limit = parseInt(S.options.counterLimit, 10) || 0;
 
             if (limit < len && limit > 2) { // support large galleries
                 var h = Math.floor(limit / 2);
@@ -275,10 +276,11 @@ function buildBars(callback) {
             while (i != end) {
                 if (i == len)
                     i = 0;
-                counter += '<a onclick="Shadowbox.change(' + i + ');"'
+                counter += '<a onclick="Shadowbox.change(' + i + ');"';
                 if (i == S.current)
                     counter += ' class="sb-counter-current"';
-                counter += ">" + (++i) + "</a>";
+                ++i;
+                counter += ">" + i + "</a>";
             }
         } else {
             counter = [S.current + 1, S.lang.of, len].join(' ');
@@ -304,7 +306,7 @@ function showBars(callback) {
     // clear visibility before animating into view
     titleInner.style.visibility = infoInner.style.visibility = "";
 
-    if (titleInner.innerHTML != "")
+    if (titleInner.innerHTML !== "")
         animate(titleInner, "marginTop", 0, duration);
     animate(infoInner, "marginTop", 0, duration, callback);
 }
@@ -375,9 +377,8 @@ function adjustWidth(width, left, anim, callback) {
  * @private
  */
 function setDimensions(height, width) {
+
     var bodyInner = get("sb-body-inner"),
-        height = parseInt(height),
-        width = parseInt(width),
         topBottom = wrapper.offsetHeight - bodyInner.offsetHeight,
         leftRight = wrapper.offsetWidth - bodyInner.offsetWidth,
 
@@ -386,11 +387,14 @@ function setDimensions(height, width) {
         maxWidth = overlay.offsetWidth,
 
         // default to the default viewport padding
-        padding = parseInt(S.options.viewportPadding) || 20,
+        padding = parseInt(S.options.viewportPadding, 10) || 20,
 
         // only preserve aspect ratio if there is something to display and
         // it's not draggable
         preserveAspect = (S.player && S.options.handleOversize != "drag");
+
+    height = parseInt(height, 10);
+    width = parseInt(width, 10);
 
     return S.setDimensions(height, width, maxHeight, maxWidth, topBottom, leftRight, padding, preserveAspect);
 }
@@ -599,7 +603,7 @@ K.init = function() {
         if (open)
             timer = setTimeout(K.onWindowResize, 10);
     });
-}
+};
 
 /**
  * Called when Shadowbox opens.
@@ -643,7 +647,7 @@ K.onOpen = function(obj, callback) {
     } else {
         callback();
     }
-}
+};
 
 /**
  * Called when a new object is being loaded.
@@ -669,7 +673,7 @@ K.onLoad = function(changing, callback) {
 
         buildBars(callback);
     });
-}
+};
 
 /**
  * Called when the content is ready to be loaded (e.g. when the image has finished
@@ -687,7 +691,7 @@ K.onReady = function(callback) {
 
     var wrapped = function() {
         showBars(callback);
-    }
+    };
 
     switch (S.options.animSequence) {
     case "hw":
@@ -703,8 +707,9 @@ K.onReady = function(callback) {
     default: // sync
         adjustWidth(dims.width, dims.left, true);
         adjustHeight(dims.innerHeight, dims.top, true, wrapped);
+        break;
     }
-}
+};
 
 /**
  * Called when the content is loaded into the box and is ready to be displayed.
@@ -717,7 +722,7 @@ K.onShow = function(callback) {
 
     // re-enable window resize events
     doWindowResize = true;
-}
+};
 
 /**
  * Called in Shadowbox.close.
@@ -736,14 +741,14 @@ K.onClose = function() {
         container.style.visibility = "hidden";
         container.style.display = "none";
         toggleTroubleElements(true);
-    }
+    };
 
     if (overlayOn) {
         animate(overlay, "opacity", 0, S.options.fadeDuration, callback);
     } else {
         callback();
     }
-}
+};
 
 /**
  * Called in Shadowbox.play.
@@ -753,7 +758,7 @@ K.onClose = function() {
 K.onPlay = function() {
     toggleNav("play", false);
     toggleNav("pause", true);
-}
+};
 
 /**
  * Called in Shadowbox.pause.
@@ -763,7 +768,7 @@ K.onPlay = function() {
 K.onPause = function() {
     toggleNav("pause", false);
     toggleNav("play", true);
-}
+};
 
 /**
  * Called when the window is resized.
@@ -785,6 +790,6 @@ K.onWindowResize = function() {
 
     if (player.onWindowResize)
         player.onWindowResize();
-}
+};
 
 S.skin = K;

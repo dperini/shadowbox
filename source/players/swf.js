@@ -17,7 +17,7 @@ S.swf = function(obj, id) {
     // height/width default to 300 pixels
     this.height = obj.height ? parseInt(obj.height, 10) : 300;
     this.width = obj.width ? parseInt(obj.width, 10) : 300;
-}
+};
 
 S.swf.ext = ["swf"];
 
@@ -71,4 +71,4 @@ S.swf.prototype = {
         el.width = dims.innerWidth;
     }
 
-}
+};

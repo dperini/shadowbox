@@ -34,7 +34,7 @@ if (navigator.plugins && navigator.plugins.length) {
             axo = new ActiveXObject(name);
         } catch(e) {}
         return !!axo;
-    }
+    };
 
     S.plugins = {
         fla:    detectPlugin('ShockwaveFlash.ShockwaveFlash'),
