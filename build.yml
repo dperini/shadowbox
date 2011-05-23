@@ -7,10 +7,7 @@ adapter: base
 language: en
 
 # An array of names of players found in source/players
-players: [flv, html, iframe, img, qt, swf, wmp]
-
-# YES to include support for CSS selectors, NO to decline
-css_support: YES
+players: [html, iframe, img, qt, wmp]
 
 # YES to compress the code, NO to use the source code
 compress: NO
