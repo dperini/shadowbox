@@ -392,18 +392,50 @@ S.revertOptions = function() {
  * @public
  */
 S.init = function(options, callback) {
+
+    if (initialized)
+        return;
+
+    initialized = true;
+
     if (S.skin.options)
         apply(S.options, S.skin.options);
+
+    if (options)
+        apply(S.options, options);
+
+    if (!S.path) {
+        // determine script path automatically
+        var path, scripts = document.getElementsByTagName("script");
+        for (var i = 0, len = scripts.length; i < len; ++i) {
+            path = scriptPath.exec(scripts[i].src);
+            if (path) {
+                S.path = path[1];
+                break;
+            }
+        }
+    }
+
+    if (callback && callback.call)
+        callback();
 };
 
 S.setup = function(elements) {
-  if (elements.length) {
+
+  if (typeof elements == 'string') {
+    if (document.querySelectorAll) {
+      elements = document.querySelectorAll(elements);
+    }
+  }
+
+  if ('length' in elements) {
     for (var i = 0, l = elements.length; l > i; ++i) {
       elements[i].setAttribute('rel', 'shadowbox');
     }
   } else {
-    element.setAttribute('rel', 'shadowbox');
+    Collection.push(elements);
   }
+
 };
 
 /**
