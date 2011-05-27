@@ -561,7 +561,9 @@ K.options = {
  */
 K.init = function() {
 
-	initialized = true;
+    if (document.body === null) return setTimeout(K.init, 50);
+
+    initialized = true;
 
     S.appendHTML(document.body, sprintf(K.markup, S.lang));
 
@@ -791,5 +793,7 @@ K.onWindowResize = function() {
     if (player.onWindowResize)
         player.onWindowResize();
 };
+
+K.init();
 
 S.skin = K;
