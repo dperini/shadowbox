@@ -8,7 +8,7 @@ document.onclick = function(e) {
     if (!initialized) S.skin.init();
 
     while (target && target.nodeType == 1) {
-        if (target.nodeName.toUpperCase() == 'A' &&
+        if (/^(a|area)$/i.test(target.nodeName) &&
             (/^(light|shadow)box(\[(.*)\])?/).test(target.getAttribute('rel'))) {
 
             S.open(target);

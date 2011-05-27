@@ -396,6 +396,16 @@ S.init = function(options, callback) {
         apply(S.options, S.skin.options);
 };
 
+S.setup = function(elements) {
+  if (elements.length) {
+    for (var i = 0, l = elements.length; l > i; ++i) {
+      elements[i].setAttribute('rel', 'shadowbox');
+    }
+  } else {
+    element.setAttribute('rel', 'shadowbox');
+  }
+};
+
 /**
  * Opens the given object in Shadowbox. This object may be any of the following:
  *
