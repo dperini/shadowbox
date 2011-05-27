@@ -7,7 +7,7 @@ adapter: base
 language: en
 
 # An array of names of players found in source/players
-players: [html, iframe, img, qt, wmp]
+players: [flv, html, iframe, img, qt, swf, wmp]
 
 # YES to compress the code, NO to use the source code
 compress: NO
