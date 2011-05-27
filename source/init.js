@@ -1,29 +1,58 @@
+var Collection = [ ];
+
 // solves cross browser needs
 document.onclick = function(e) {
 
-    e || ((this.ownerDocument || this.document || this).parentWindow || window).event;
+  var i, j, l, element, match, target, that;
 
-    var target = e.target || e.srcElement;
+  e || ((this.ownerDocument || this.document || this).parentWindow || window).event;
 
-    if (!initialized) S.skin.init();
+  target = e.target || e.srcElement;
 
-    while (target && target.nodeType == 1) {
-        if (/^(a|area)$/i.test(target.nodeName) &&
-            (/^(light|shadow)box(\[(.*)\])?/).test(target.getAttribute('rel'))) {
+  if (!initialized) S.skin.init();
 
-            S.open(target);
+  if (Collection.length) {
+    match = false;
+    for (i = 0, l = Collection.length; l > i; ++i) {
+      element = Collection[i];
+      for (j in element) {
+        if (RegExp('^' + element[j] + '$', 'i').test(target[j]) === false) break;
+      }
+      if (element[j] === target[j]) {
 
-            if (S.gallery.length) {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                } else {
-                    e.returnValue = false;
-                }
-                return false;
-            }
+      S.open(target);
+
+      if (S.gallery.length) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        } else {
+          e.returnValue = false;
         }
-        target = target.parentNode;
-    }
+        return false;
+      }
 
-    return true;
+      }
+    }
+  }
+
+  while (target && target.nodeType == 1) {
+    if (/^(a|area)$/i.test(target.nodeName) &&
+      (/^(light|shadow)box(\[(.*)\])?/).test(target.getAttribute('rel'))) {
+
+      S.open(target);
+
+      if (S.gallery.length) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        } else {
+          e.returnValue = false;
+        }
+        return false;
+      }
+    }
+    target = target.parentNode;
+  }
+
+  return true;
+
 };
