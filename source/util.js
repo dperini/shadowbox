@@ -107,7 +107,7 @@ function remove(el) {
  * @type    {Boolean}
  * @private
  */
-var supportsOpacity = 'opacity' in root.style &&                                                                                              
+var supportsOpacity = 'opacity' in root.style &&
     typeof root.style.opacity == 'string',
 
 /**

@@ -179,7 +179,7 @@ function toggleNav(id, on) {
  * @private
  */
 function toggleLoading(on, callback) {
-    var wrapped, 
+    var wrapped,
         loading = get("sb-loading"),
         playerName = S.getCurrent().player,
         anim = (playerName == "img" || playerName == "html"); // fade on images & html
