@@ -33,8 +33,8 @@ S.iframe.prototype = {
         var html = '<iframe id="' + this.id + '" name="' + this.id + '" height="100%" ' +
             'width="100%" frameborder="0" marginwidth="0" marginheight="0" ' +
             'style="visibility:hidden" onload="this.style.visibility=\'visible\'" ' +
-            'scrolling="auto"';
-
+            'scrolling="auto" allowtransparency="true" src="about:blank"></iframe>';
+/*
         if (S.isIE) {
             // prevent brief whiteout while loading iframe source
             html += ' allowtransparency="true"';
@@ -46,7 +46,7 @@ S.iframe.prototype = {
         }
 
         html += '></iframe>';
-
+*/
         // use innerHTML method of insertion here instead of appendChild
         // because IE renders frameborder otherwise
         body.innerHTML = html;
@@ -61,8 +61,11 @@ S.iframe.prototype = {
         var el = get(this.id);
         if (el) {
             remove(el);
-            if (S.isGecko)
-                delete window.frames[this.id]; // needed for Firefox
+            try {
+                // needed for Firefox
+                // IE<=8 throws error
+                delete window.frames[this.id];
+            } catch(err) { }
         }
     },
 
@@ -72,7 +75,7 @@ S.iframe.prototype = {
      * @public
      */
     onLoad: function() {
-        var win = S.isIE ? get(this.id).contentWindow : window.frames[this.id];
+        var win = window.frames[this.id];
         win.location.href = this.obj.content;
     }
 
