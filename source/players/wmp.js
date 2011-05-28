@@ -8,7 +8,7 @@
  * @type    {Number}
  * @private
  */
-var wmpControllerHeight = (S.isIE ? 70 : 45);
+var wmpControllerHeight = typeof document.fileSize != 'undefined' ? 70 : 45;
 
 /**
  * Constructor. The Windows Media player class for Shadowbox.
