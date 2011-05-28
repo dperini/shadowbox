@@ -48,10 +48,8 @@ function apply(original, extension) {
  * @private
  */
 function each(obj, callback) {
-    var i = 0, len = obj.length;
-    for (var value = obj[0]; i < len && callback.call(value, i, value) !== false; ++i) {
-      value = obj[i];
-    }
+    var i = -1;
+    while (obj[++i]) if (callback.call(obj[i], i, obj[i]) === false) break;
 }
 
 /**
