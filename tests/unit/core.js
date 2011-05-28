@@ -95,7 +95,6 @@ test("makeGallery (automatic)", function() {
     var current = gc[1];
     equal(gallery[0].link, link3);
     equal(gallery[1].link, link4);
-    Shadowbox.clearCache();
 });
 
 test("makeGallery (manual)", function() {
