@@ -420,7 +420,7 @@ S.init = function(options, callback) {
         callback();
 };
 
-S.setup = function(elements) {
+S.setup = function(elements, options) {
 
   if (typeof elements == 'string') {
     if (document.querySelectorAll) {
@@ -431,9 +431,11 @@ S.setup = function(elements) {
   if ('length' in elements) {
     for (var i = 0, l = elements.length; l > i; ++i) {
       elements[i].setAttribute('rel', 'shadowbox');
+      S.makeObject(elements[i], options);
     }
   } else {
     Collection.push(elements);
+    Options.push(options);
   }
 
 };

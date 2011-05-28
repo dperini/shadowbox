@@ -1,58 +1,49 @@
-var Collection = [ ];
+// list of registered objects
+var Collection = [ ], Options = [ ];
 
 // solves cross browser needs
 document.onclick = function(e) {
 
-  var i, j, l, element, match, target, that;
+  var i, j, l, element, target;
 
-  e || ((this.ownerDocument || this.document || this).parentWindow || window).event;
+  e || (e = (this.parentWindow || window).event);
 
-  target = e.target || e.srcElement;
+  element = target = e.target || e.srcElement;
 
   if (!initialized) S.skin.init();
 
+  while (element && element.nodeType == 1) {
+    if (/^(a|area)$/i.test(element.nodeName) &&
+      (/^(light|shadow)box(\[(.*)\])?/).test(element.getAttribute('rel'))) {
+      display(element);
+      break;
+    }
+    element = element.parentNode;
+  }
+
   if (Collection.length) {
-    match = false;
     for (i = 0, l = Collection.length; l > i; ++i) {
       element = Collection[i];
       for (j in element) {
         if (RegExp('^' + element[j] + '$', 'i').test(target[j]) === false) break;
       }
       if (element[j] === target[j]) {
-
-      S.open(target);
-
-      if (S.gallery.length) {
-        if (e.preventDefault) {
-          e.preventDefault();
-        } else {
-          e.returnValue = false;
-        }
-        return false;
-      }
-
+        element = S.makeObject(target, Options[i])
+        display(element);
       }
     }
   }
 
-  while (target && target.nodeType == 1) {
-    if (/^(a|area)$/i.test(target.nodeName) &&
-      (/^(light|shadow)box(\[(.*)\])?/).test(target.getAttribute('rel'))) {
-
-      S.open(target);
-
-      if (S.gallery.length) {
-        if (e.preventDefault) {
-          e.preventDefault();
-        } else {
-          e.returnValue = false;
-        }
-        return false;
+  function display(element) {
+    S.open(element);
+    if (S.gallery.length) {
+      if (e.preventDefault) {
+        e.preventDefault();
+      } else {
+        e.returnValue = false;
       }
+      return false;
     }
-    target = target.parentNode;
-  }
-
-  return true;
+  };
 
 };
