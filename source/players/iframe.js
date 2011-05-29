@@ -50,10 +50,9 @@ S.iframe.prototype = {
         if (el) {
             remove(el);
             try {
-                // needed for Firefox
-                // IE<=8 throws error
+                // needed for Firefox, IE <= 8 throws error
                 delete window.frames[this.id];
-            } catch(err) { }
+            } catch (err) {}
         }
     },
 
