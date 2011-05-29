@@ -28,7 +28,7 @@ document.onclick = function(e) {
         if (RegExp('^' + element[j] + '$', 'i').test(target[j]) === false) break;
       }
       if (element[j] === target[j]) {
-        element = S.makeObject(target, Options[i])
+        element = S.makeObject(target, Options[i]);
         display(element);
       }
     }
@@ -44,6 +44,6 @@ document.onclick = function(e) {
       }
       return false;
     }
-  };
+  }
 
 };

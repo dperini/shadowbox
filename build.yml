@@ -1,8 +1,5 @@
 ---
 
-# May be the name of any adapter in source/adapters
-adapter: base
-
 # May be any language code in source/languages
 language: en
 
