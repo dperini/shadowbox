@@ -140,8 +140,6 @@ module Shadowbox
       files << 'intro'
       files << 'core'
       files << 'init'
-      files << 'util'
-      files << 'base'
       files << 'plugins'
       files << 'flash' if requires_flash?
       files << File.join('languages', language)
