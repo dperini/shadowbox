@@ -464,7 +464,6 @@ S.setup = function(elements, options) {
   if (elements && 'length' in elements) {
     for (var i = 0, l = elements.length; l > i; ++i) {
       elements[i].setAttribute('rel', 'shadowbox');
-      S.makeObject(elements[i], options || { });
     }
   } else if (elements) {
     Collection.push(elements);
