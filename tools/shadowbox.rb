@@ -58,7 +58,6 @@ module Shadowbox
     DEFAULTS = {
       :language     => Shadowbox.default_language,
       :players      => Shadowbox.default_players,
-      :css_support  => true,
       :compress     => false
     }
 
