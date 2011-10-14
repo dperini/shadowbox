@@ -1,10 +1,7 @@
 ---
 
-# May be any language code in source/languages
-language: en
-
 # An array of names of players found in source/players
-players: [flv, html, iframe, img, qt, swf, wmp]
+players: [flv, html, iframe, img, qt, swf]
 
 # YES to compress the code, NO to use the source code
 compress: NO
