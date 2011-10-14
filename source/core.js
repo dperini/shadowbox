@@ -150,14 +150,6 @@ S.errorInfo = {
     qt: {
         name: "QuickTime",
         url:  "http://www.apple.com/quicktime/download/"
-    },
-    wmp: {
-        name: "Windows Media Player",
-        url:  "http://www.microsoft.com/windows/windowsmedia/"
-    },
-    f4m: {
-        name: "Flip4Mac",
-        url:  "http://www.flip4mac.com/wmv_download.htm"
     }
 };
 
@@ -866,15 +858,7 @@ S.getPlayer = function(content) {
             return "flv";
         }
         if (S.qt && S.qt.ext.contains(ext)) {
-            if (S.wmp && S.wmp.ext.contains(ext)) {
-                // can be played by either QuickTime or Windows Media Player
-                return "qtwmp";
-            } else {
-                return "qt";
-            }
-        }
-        if (S.wmp && S.wmp.ext.contains(ext)) {
-            return "wmp";
+            return "qt";
         }
     }
 
@@ -888,7 +872,7 @@ S.getPlayer = function(content) {
  */
 function filterGallery() {
     var err = S.errorInfo, plugins = S.plugins, obj, remove, needed,
-        m, format, replace, inlineEl, flashVersion;
+        m, inlineEl, flashVersion;
 
     for (var i = 0; i < S.gallery.length; ++i) {
         obj = S.gallery[i];
@@ -908,26 +892,6 @@ function filterGallery() {
                 needed = "qt";
             }
             break;
-        case "wmp":
-            if (plugins.qt) {
-                if (plugins.f4m) {
-                    obj.player = "qt";
-                } else {
-                    needed = "qtf4m";
-                }
-            } else if (!plugins.wmp) {
-                needed = "wmp";
-            }
-            break;
-        case "qtwmp":
-            if (plugins.qt) {
-                obj.player = "qt";
-            } else if (plugins.wmp) {
-                obj.player = "wmp";
-            } else {
-                needed = "qtwmp";
-            }
-            break;
         default:
             break;
         }
@@ -935,24 +899,9 @@ function filterGallery() {
         // handle unsupported elements
         if (needed) {
             if (S.options.handleUnsupported == "link") {
-                // generate a link to the appropriate plugin download page(s)
-                switch (needed) {
-                case "qtf4m":
-                    format = "shared";
-                    replace = [err.qt.url, err.qt.name, err.f4m.url, err.f4m.name];
-                    break;
-                case "qtwmp":
-                    format = "either";
-                    replace = [err.qt.url, err.qt.name, err.wmp.url, err.wmp.name];
-                    break;
-                default:
-                    format = "single";
-                    replace = [err[needed].url, err[needed].name];
-                    break;
-                }
-
+                // generate a link to the appropriate plugin download page
                 obj.player = "html";
-                obj.content = '<div class="sb-message">' + sprintf(S.lang.errors[format], replace) + '</div>';
+                obj.content = '<div class="sb-message">Please download <a href="' + err[needed].url + '">' + err[needed].name + '</a> in order to view this content.</div>';
             } else {
                 remove = true;
             }
@@ -1019,12 +968,13 @@ function listenKeys(on) {
  */
 function handleKey(e) {
     // don't handle events with modifier keys
-    if (e.metaKey || e.shiftKey || e.altKey || e.ctrlKey)
+    if (e.metaKey || e.shiftKey || e.altKey || e.ctrlKey) {
         return;
+    }
 
-    var code = keyCode(e), handler;
+    var handler;
 
-    switch (code) {
+    switch (e.which ? e.which : e.keyCode) {
     case 81: // q
     case 88: // x
     case 27: // esc
@@ -1044,7 +994,7 @@ function handleKey(e) {
     }
 
     if (handler) {
-        preventDefault(e);
+        e.preventDefault(e);
         handler();
     }
 }
@@ -1063,8 +1013,9 @@ function load(changing) {
     // determine player, inline is really just html
     var player = (obj.player == "inline" ? "html" : obj.player);
 
-    if (typeof S[player] != "function")
+    if (typeof S[player] != "function") {
         throw "unknown player " + player;
+    }
 
     if (changing) {
         S.player.remove();
@@ -1187,31 +1138,7 @@ function apply(original, extension) {
  */
 function each(obj, callback) {
     var i = 0;
-    while (obj[i]) {
-      if (callback.call(obj[i], i, obj[i]) === false) break;
-      i++;
-    }
-}
-
-/**
- * Formats a string with the elements in the replacement array. The string should contain
- * tokens in the format {n} where n corresponds to the index of property name of the replacement
- * in the replace object.
- *
- * Example:
- *
- * format('Hello {0}', ['World']); // "Hello World"
- * format('Hello {world}', {world: "World"}); // "Hello World"
- *
- * @param   {String}        str         The format spec string
- * @param   {Array|Object}  replace     The array/object of replacement values
- * @return  {String}                    The formatted string
- * @private
- */
-function sprintf(str, replace) {
-    return str.replace(/\{(\w+?)\}/g, function(match, i) {
-        return replace[i];
-    });
+    while (obj[i]) { if (callback.call(obj[i], i, obj[i]) === false) break; i++; }
 }
 
 /**
@@ -1378,31 +1305,6 @@ function getPageXY(e) {
     return [x, y];
 }
 
-/**
- * Prevents the event's default behavior. The event object passed will
- * be the same object that is passed to listeners registered with
- * addEvent().
- *
- * @param   {Event}     e       The event object
- * @private
- */
-function preventDefault(e) {
-    e.preventDefault();
-}
-
-/**
- * Gets the key code of the given event object (keydown). The event
- * object here will be the same object that is passed to listeners
- * registered with addEvent().
- *
- * @param   {Event}     e       The event object
- * @return  {Number}            The key code of the event
- * @private
- */
-function keyCode(e) {
-    return e.which ? e.which : e.keyCode;
-}
-
 // Event handling functions below modified from original by Dean Edwards
 // http://dean.edwards.name/my/events.js
 
@@ -1474,6 +1376,7 @@ addEvent.stopPropagation = function() {
 addEvent.fixEvent = function(e) {
     e.preventDefault = addEvent.preventDefault;
     e.stopPropagation = addEvent.stopPropagation;
+    e.keyCode = e.which;
     return e;
 };
 
